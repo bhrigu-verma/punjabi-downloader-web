@@ -1,0 +1,19 @@
+# Download artifacts and runtime state
+runtime/
+runtime_single_test/
+data/raw/youtube/
+
+# Local inputs
+urls.txt
+cookies*.txt
+!cookies*.example.txt
+
+# Local config override
+config/local.env
+
+# Logs and locks
+*.log
+*.lock
+
+# Python cache
+__pycache__/

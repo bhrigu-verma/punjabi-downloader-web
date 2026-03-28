@@ -1,0 +1,5 @@
+# Export your YouTube cookies in Netscape format and replace this file.
+# Example tools: browser-cookie export extensions.
+# Keep this file local only. Do not commit real cookies.
+# Netscape format starts like this:
+# .youtube.com	TRUE	/	TRUE	2147483647	SID	<value>

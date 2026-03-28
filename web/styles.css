@@ -1,0 +1,243 @@
+:root {
+  --bg-1: #f3f7f4;
+  --bg-2: #dce8e1;
+  --ink: #102418;
+  --muted: #4d6355;
+  --card: #ffffffd9;
+  --line: #c6d8cb;
+  --accent: #0f7a4a;
+  --danger: #a93c1c;
+  --soft-accent: #e8f7ef;
+  --soft-danger: #fdebe5;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  color: var(--ink);
+  background: radial-gradient(circle at 20% 10%, var(--bg-2), var(--bg-1) 45%, #f7faf8 85%);
+}
+
+.bg-shape {
+  position: fixed;
+  z-index: -1;
+  border-radius: 999px;
+  filter: blur(18px);
+  opacity: 0.35;
+}
+
+.bg-a {
+  width: 360px;
+  height: 360px;
+  background: #74d3a3;
+  top: -80px;
+  right: -120px;
+}
+
+.bg-b {
+  width: 420px;
+  height: 420px;
+  background: #f7b685;
+  bottom: -120px;
+  left: -160px;
+}
+
+.top {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 20px 12px;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 2vw + 1rem, 2.4rem);
+}
+
+.sub {
+  margin: 6px 0 14px;
+  color: var(--muted);
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn.primary { background: var(--accent); color: #fff; }
+.btn.danger { background: var(--danger); color: #fff; }
+.btn.ghost { background: #fff; border-color: var(--line); color: var(--ink); }
+
+.flash {
+  min-height: 24px;
+  padding-top: 10px;
+  color: var(--muted);
+}
+
+.grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8px 20px 28px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 14px;
+}
+
+.card {
+  background: var(--card);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 10px 25px rgba(16, 36, 24, 0.08);
+}
+
+.summary { grid-column: span 7; }
+.preflight { grid-column: span 5; }
+.workers { grid-column: span 7; }
+.logs { grid-column: span 5; }
+
+h2 { margin: 0 0 10px; font-size: 1.06rem; }
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.kpi {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.kpi span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.kpi strong {
+  display: block;
+  margin-top: 5px;
+  font-size: 1.15rem;
+}
+
+.paths {
+  margin-top: 10px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.paths code {
+  background: #f4f8f6;
+  border: 1px solid #d9e7de;
+  border-radius: 6px;
+  padding: 1px 6px;
+}
+
+.checks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.check {
+  border-radius: 10px;
+  padding: 9px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.check.ok {
+  background: var(--soft-accent);
+  border-color: #b8e6cc;
+}
+
+.check.bad {
+  background: var(--soft-danger);
+  border-color: #f4c7b9;
+}
+
+.workers-list {
+  display: grid;
+  gap: 9px;
+}
+
+.worker {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.worker-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.bar {
+  height: 8px;
+  background: #ecf2ee;
+  border-radius: 999px;
+  margin: 8px 0;
+  overflow: hidden;
+}
+
+.bar > i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #1b9e63, #0f7a4a);
+  width: 0;
+  transition: width 0.3s ease;
+}
+
+.meta {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.logs-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+select {
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  padding: 6px;
+  background: #fff;
+}
+
+.log-box {
+  margin: 10px 0 0;
+  background: #0f1f17;
+  color: #d9ffea;
+  border-radius: 10px;
+  border: 1px solid #1e3a2d;
+  padding: 12px;
+  height: 340px;
+  overflow: auto;
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+@media (max-width: 920px) {
+  .summary, .preflight, .workers, .logs { grid-column: span 12; }
+}

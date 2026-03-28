@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Punjabi Downloader Control</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="bg-shape bg-a"></div>
+  <div class="bg-shape bg-b"></div>
+
+  <header class="top">
+    <h1>Punjabi YouTube Downloader</h1>
+    <p class="sub">Local control panel for workers, progress, and logs</p>
+    <div class="actions">
+      <button id="btnStart" class="btn primary">Start Workers</button>
+      <button id="btnStop" class="btn danger">Stop Workers</button>
+      <button id="btnRefresh" class="btn ghost">Refresh</button>
+    </div>
+    <div id="flash" class="flash" aria-live="polite"></div>
+  </header>
+
+  <main class="grid">
+    <section class="card summary">
+      <h2>System</h2>
+      <div class="kpis">
+        <div class="kpi"><span>tmux</span><strong id="kpiTmux">-</strong></div>
+        <div class="kpi"><span>Total done</span><strong id="kpiDone">0 / 0</strong></div>
+        <div class="kpi"><span>WAV files</span><strong id="kpiWav">0</strong></div>
+      </div>
+      <div class="paths">
+        <div>Output: <code id="pathOutput">-</code></div>
+        <div>Logs: <code id="pathLogs">-</code></div>
+        <div>Runtime: <code id="pathRuntime">-</code></div>
+      </div>
+    </section>
+
+    <section class="card preflight">
+      <h2>Preflight</h2>
+      <div id="checks" class="checks"></div>
+    </section>
+
+    <section class="card workers">
+      <h2>Workers</h2>
+      <div id="workersList" class="workers-list"></div>
+    </section>
+
+    <section class="card logs">
+      <div class="logs-head">
+        <h2>Logs</h2>
+        <label>
+          Worker
+          <select id="workerSelect"></select>
+        </label>
+      </div>
+      <pre id="logBox" class="log-box">Loading logs...</pre>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
