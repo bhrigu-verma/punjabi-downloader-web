@@ -19,4 +19,7 @@ RUN chmod +x /app/scripts/*.sh
 
 EXPOSE 8787
 
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+    CMD curl -fsS http://127.0.0.1:8787/healthz || exit 1
+
 CMD ["bash", "/app/scripts/start_prod.sh"]
