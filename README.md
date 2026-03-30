@@ -300,6 +300,11 @@ Port 8787 busy:
 
 - run_ui.sh automatically picks next free port.
 
+Exit code 143 while restarting:
+
+- Exit code `143` usually means the previous process received SIGTERM during restart.
+- If the next `run_ui.sh` launch succeeds, this is expected and not a pipeline failure.
+
 Workers not running:
 
 ```bash
