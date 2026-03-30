@@ -166,3 +166,8 @@ This playbook captures repeatable runtime and deployment checks for Punjabi Down
 - Objective: Keep this checkpoint repeatable and observable in day-to-day operations.
 - Command: Validate state through dashboard and API status before and after action.
 - Verification: Capture log evidence and confirm expected state transition.
+
+## 34. production start script usage
+- Objective: Keep this checkpoint repeatable and observable in day-to-day operations.
+- Command: Validate state through dashboard and API status before and after action.
+- Verification: Capture log evidence and confirm expected state transition.
