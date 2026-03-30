@@ -46,6 +46,12 @@ The pipeline will not run if core dependencies are missing. Check quickly:
 curl -s http://127.0.0.1:8787/api/preflight
 ```
 
+For a compact pass/fail output:
+
+```bash
+curl -s http://127.0.0.1:8787/api/preflight | python3 -m json.tool
+```
+
 ## Install Dependencies
 
 ### Linux (Ubuntu/Debian)
