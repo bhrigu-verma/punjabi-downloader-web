@@ -3,58 +3,134 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Punjabi Downloader Control</title>
+  <title>Punjabi Downloader Launch Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <div class="bg-shape bg-a"></div>
-  <div class="bg-shape bg-b"></div>
+  <div class="texture texture-a"></div>
+  <div class="texture texture-b"></div>
 
-  <header class="top">
-    <h1>Punjabi YouTube Downloader</h1>
-    <p class="sub">Local control panel for workers, progress, and logs</p>
-    <div class="actions">
-      <button id="btnStart" class="btn primary">Start Workers</button>
-      <button id="btnStop" class="btn danger">Stop Workers</button>
+  <header class="hero">
+    <div class="hero-main">
+      <p class="eyebrow">Launch Console</p>
+      <h1>Punjabi YouTube Downloader</h1>
+      <p class="sub">Single-flow WAV extraction with realtime control, recovery, and quality visibility.</p>
+      <a class="home-link" href="/">Back to Home</a>
+    </div>
+    <div class="hero-side">
+      <div id="appStatePill" class="state-pill idle">Idle</div>
+      <p class="state-meta">Last sync <span id="statusClock">-</span></p>
+    </div>
+    <div class="toolbar">
+      <button id="btnStart" class="btn primary">Start Pipeline</button>
+      <button id="btnStop" class="btn danger">Stop Pipeline</button>
       <button id="btnRefresh" class="btn ghost">Refresh</button>
+      <label class="poll-wrap" for="pollSelect">Refresh
+        <select id="pollSelect">
+          <option value="2000">2s</option>
+          <option value="4000" selected>4s</option>
+          <option value="8000">8s</option>
+          <option value="12000">12s</option>
+        </select>
+      </label>
     </div>
     <div id="flash" class="flash" aria-live="polite"></div>
   </header>
 
   <main class="grid">
-    <section class="card summary">
-      <h2>System</h2>
+    <section class="card card-metrics">
+      <div class="card-head">
+        <h2>Mission Metrics</h2>
+      </div>
       <div class="kpis">
-        <div class="kpi"><span>tmux</span><strong id="kpiTmux">-</strong></div>
-        <div class="kpi"><span>Total done</span><strong id="kpiDone">0 / 0</strong></div>
-        <div class="kpi"><span>WAV files</span><strong id="kpiWav">0</strong></div>
+        <article class="kpi"><span>tmux state</span><strong id="kpiTmux">-</strong></article>
+        <article class="kpi"><span>completed / total</span><strong id="kpiDone">0 / 0</strong></article>
+        <article class="kpi"><span>pending URLs</span><strong id="kpiPending">0</strong></article>
+        <article class="kpi"><span>success rate</span><strong id="kpiSuccess">0%</strong></article>
+        <article class="kpi"><span>wav files</span><strong id="kpiWav">0</strong></article>
+        <article class="kpi"><span>auto-resume</span><strong id="kpiAuto">off</strong></article>
       </div>
       <div class="paths">
-        <div>Output: <code id="pathOutput">-</code></div>
-        <div>Logs: <code id="pathLogs">-</code></div>
-        <div>Runtime: <code id="pathRuntime">-</code></div>
+        <div class="path-row">
+          <span>Output</span>
+          <code id="pathOutput">-</code>
+          <button id="copyOutputPath" class="mini-btn" type="button">Copy</button>
+        </div>
+        <div class="path-row">
+          <span>Logs</span>
+          <code id="pathLogs">-</code>
+          <button id="copyLogPath" class="mini-btn" type="button">Copy</button>
+        </div>
+        <div class="path-row">
+          <span>Runtime</span>
+          <code id="pathRuntime">-</code>
+          <button id="copyRuntimePath" class="mini-btn" type="button">Copy</button>
+        </div>
       </div>
     </section>
 
-    <section class="card preflight">
-      <h2>Preflight</h2>
+    <section class="card card-launch">
+      <div class="card-head">
+        <h2>Launch Readiness</h2>
+      </div>
+      <div id="configBadges" class="badges"></div>
       <div id="checks" class="checks"></div>
+      <div id="autoResumeMeta" class="auto-meta">Auto-resume status unavailable.</div>
     </section>
 
-    <section class="card workers">
-      <h2>Workers</h2>
+    <section class="card card-workers">
+      <div class="card-head">
+        <h2>Worker Radar</h2>
+      </div>
       <div id="workersList" class="workers-list"></div>
     </section>
 
-    <section class="card logs">
-      <div class="logs-head">
-        <h2>Logs</h2>
-        <label>
-          Worker
-          <select id="workerSelect"></select>
-        </label>
+    <section class="card card-failed">
+      <div class="card-head">
+        <h2>Failed Queue</h2>
+        <span id="failedCount" class="soft-pill">0</span>
+      </div>
+      <div id="failedList" class="list compact-list"></div>
+      <button id="btnCopyFailed" class="btn ghost full" type="button">Copy Failed URLs</button>
+    </section>
+
+    <section class="card card-outputs">
+      <div class="card-head">
+        <h2>Recent Outputs</h2>
+        <span id="outputsCount" class="soft-pill">0</span>
+      </div>
+      <div id="outputsList" class="list"></div>
+    </section>
+
+    <section class="card card-logs">
+      <div class="card-head stack-mobile">
+        <h2>Live Logs</h2>
+        <div class="logs-controls">
+          <label>
+            Worker
+            <select id="workerSelect"></select>
+          </label>
+          <label>
+            Filter
+            <input id="logFilter" type="text" placeholder="retry, error, current...">
+          </label>
+          <label class="inline-toggle">
+            <input id="autoScrollToggle" type="checkbox" checked>
+            Auto-scroll
+          </label>
+        </div>
       </div>
       <pre id="logBox" class="log-box">Loading logs...</pre>
+    </section>
+
+    <section class="card card-events">
+      <div class="card-head">
+        <h2>Activity Feed</h2>
+      </div>
+      <div id="eventFeed" class="list compact-list"></div>
     </section>
   </main>
 

@@ -124,6 +124,8 @@ START_TS=$(date +%s)
 
 # Allow format override via config (defaults to existing behavior)
 DOWNLOAD_FORMAT="${DOWNLOAD_FORMAT:-bestaudio/best}"
+STRICT_WAV_VALIDATION="${STRICT_WAV_VALIDATION:-0}"
+WAV_CODEC="${WAV_CODEC:-pcm_s16le}"
 
 log_message "Starting worker with chunk $CHUNK_FILE"
 if [[ "$USE_COOKIES" == "1" ]]; then
@@ -152,6 +154,48 @@ except Exception:
     pass
 PY
   fi
+}
+
+validate_wav_integrity() {
+  local wav_file="$1"
+  local sample_rate channels codec format_name
+
+  if [[ "$STRICT_WAV_VALIDATION" != "1" ]]; then
+    return 0
+  fi
+
+  if ! command -v ffprobe >/dev/null 2>&1; then
+    log_message "WARN: STRICT_WAV_VALIDATION=1 but ffprobe is missing; skipping strict validation"
+    return 0
+  fi
+
+  sample_rate=$(ffprobe -v error -select_streams a:0 -show_entries stream=sample_rate -of default=nw=1:nk=1 "$wav_file" 2>/dev/null | head -1 || true)
+  channels=$(ffprobe -v error -select_streams a:0 -show_entries stream=channels -of default=nw=1:nk=1 "$wav_file" 2>/dev/null | head -1 || true)
+  codec=$(ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of default=nw=1:nk=1 "$wav_file" 2>/dev/null | head -1 || true)
+  format_name=$(ffprobe -v error -show_entries format=format_name -of default=nw=1:nk=1 "$wav_file" 2>/dev/null | head -1 || true)
+
+  if [[ -z "$sample_rate" || -z "$channels" || -z "$codec" || -z "$format_name" ]]; then
+    log_message "WAV validation failed: missing ffprobe metadata for $wav_file"
+    return 1
+  fi
+  if [[ "$sample_rate" != "$AUDIO_SAMPLE_RATE" ]]; then
+    log_message "WAV validation failed: sample_rate=$sample_rate expected=$AUDIO_SAMPLE_RATE"
+    return 1
+  fi
+  if [[ "$channels" != "$AUDIO_CHANNELS" ]]; then
+    log_message "WAV validation failed: channels=$channels expected=$AUDIO_CHANNELS"
+    return 1
+  fi
+  if [[ "$codec" != "$WAV_CODEC" ]]; then
+    log_message "WAV validation failed: codec=$codec expected=$WAV_CODEC"
+    return 1
+  fi
+  if [[ "$format_name" != *wav* ]]; then
+    log_message "WAV validation failed: format=$format_name is not wav"
+    return 1
+  fi
+
+  return 0
 }
 
 while IFS= read -r URL; do
@@ -195,6 +239,9 @@ while IFS= read -r URL; do
 
   while (( RETRY < MAX_RETRIES )) && (( SUCCESS == 0 )); do
     RETRY=$((RETRY + 1))
+    if (( RETRY > 1 )); then
+      write_status "retrying" "$VIDEO_ID" "attempt=${RETRY}/${MAX_RETRIES}"
+    fi
     rm -f "$WORK_DIR"/*.wav "$WORK_DIR"/*.webm "$WORK_DIR"/*.m4a 2>/dev/null || true
 
     DOWNLOAD_OK=0
@@ -240,7 +287,7 @@ while IFS= read -r URL; do
       WAV_FILE=$(ls -1 "$WORK_DIR"/*.wav 2>/dev/null | head -1 || true)
       if [[ -f "$WAV_FILE" ]]; then
         FILE_SIZE=$(stat -c%s "$WAV_FILE" 2>/dev/null || stat -f%z "$WAV_FILE")
-        if (( FILE_SIZE > MIN_FILE_SIZE )); then
+        if (( FILE_SIZE > MIN_FILE_SIZE )) && validate_wav_integrity "$WAV_FILE"; then
           OUT_FILE="$OUTPUT_DIR/${VIDEO_ID}.wav"
           mv "$WAV_FILE" "$OUT_FILE"
 
@@ -261,6 +308,10 @@ while IFS= read -r URL; do
           SUCCESS=1
           log_message "DOWNLOADED: $VIDEO_ID"
           write_status "downloaded" "$VIDEO_ID" "ok"
+        elif (( FILE_SIZE <= MIN_FILE_SIZE )); then
+          log_message "WAV validation failed: file too small ($FILE_SIZE bytes, min=$MIN_FILE_SIZE)"
+        else
+          log_message "WAV validation failed for $VIDEO_ID"
         fi
       fi
     fi

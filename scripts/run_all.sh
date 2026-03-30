@@ -24,6 +24,15 @@ resolve_path() {
   fi
 }
 
+is_true() {
+  local v="$1"
+  v=$(printf '%s' "$v" | tr '[:upper:]' '[:lower:]')
+  case "$v" in
+    1|true|yes|on) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
 OUTPUT_DIR="$(resolve_path "${OUTPUT_DIR:-data/raw/youtube}")"
 LOG_DIR="$(resolve_path "${LOG_DIR:-runtime/logs}")"
 
@@ -105,15 +114,24 @@ if ! command -v deno >/dev/null 2>&1; then
   echo "WARN: deno not found. Some YouTube signatures may fail without it."
 fi
 
-for cookie in $COOKIE_FILES; do
-  if [[ ! -f "$PROJECT_DIR/$cookie" ]]; then
-    echo "ERROR: cookie file missing: $PROJECT_DIR/$cookie"
-    exit 1
-  fi
-done
+if [[ "${USE_COOKIES:-1}" == "1" ]]; then
+  for cookie in $COOKIE_FILES; do
+    if [[ ! -f "$PROJECT_DIR/$cookie" ]]; then
+      echo "ERROR: cookie file missing: $PROJECT_DIR/$cookie"
+      exit 1
+    fi
+  done
+fi
 
 if (( NUM_WORKERS < 1 )); then
   echo "ERROR: NUM_WORKERS must be >= 1"
+  exit 1
+fi
+
+BROWSER_SEQUENTIAL_MODE="${BROWSER_SEQUENTIAL_MODE:-0}"
+if is_true "$BROWSER_SEQUENTIAL_MODE" && (( NUM_WORKERS != 1 )); then
+  echo "ERROR: browser sequential mode requires NUM_WORKERS=1"
+  echo "Current NUM_WORKERS=$NUM_WORKERS from config: $CONFIG_FILE"
   exit 1
 fi
 

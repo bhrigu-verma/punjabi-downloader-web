@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Punjabi Downloader | Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="landing-body">
+  <div class="landing-noise"></div>
+  <main class="landing-wrap">
+    <section class="landing-hero">
+      <p class="landing-chip">Punjabi Voice Infrastructure</p>
+      <h1>Launch Punjabi audio extraction in one controlled flow</h1>
+      <p class="landing-sub">
+        A production-ready YouTube to WAV pipeline with tmux worker orchestration,
+        strict audio options, retries, and a monitored dashboard for operations.
+      </p>
+      <div class="landing-actions">
+        <a class="btn primary" href="/dashboard">Open Dashboard</a>
+        <a class="btn ghost" href="https://github.com/bhriguv/punjabi-downloader-web" target="_blank" rel="noreferrer">View GitHub</a>
+      </div>
+      <p class="landing-note">
+        If basic auth is enabled, dashboard access prompts for credentials.
+      </p>
+    </section>
+
+    <section class="landing-grid">
+      <article class="landing-card">
+        <h2>Reliable By Default</h2>
+        <p>Auto-resume, cooldown control, and per-worker visibility prevent silent pipeline stalls.</p>
+      </article>
+      <article class="landing-card">
+        <h2>Quality-Focused WAV</h2>
+        <p>16k mono conversion plus optional strict ffprobe validation keeps your dataset consistent.</p>
+      </article>
+      <article class="landing-card">
+        <h2>Deploy Anywhere</h2>
+        <p>Run locally, in Docker, or on VPS/PaaS with env-configurable auth and health checks.</p>
+      </article>
+    </section>
+
+    <section class="landing-status">
+      <h2>Quick Ops Checklist</h2>
+      <ul>
+        <li>Provide URLs in urls.txt</li>
+        <li>Set DOWNLOADER_CONFIG for your environment</li>
+        <li>Set BASIC_AUTH_* values for public access</li>
+        <li>Open dashboard and press Start Pipeline</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

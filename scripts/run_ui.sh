@@ -7,7 +7,7 @@ REPO_ROOT="$(cd "$PROJECT_DIR/../.." && pwd)"
 WORKSPACE_ROOT="$(cd "$PROJECT_DIR/../../.." && pwd)"
 CONFIG_FILE="${DOWNLOADER_CONFIG:-$PROJECT_DIR/config/default.env}"
 HOST="${UI_HOST:-127.0.0.1}"
-PORT="${UI_PORT:-8787}"
+PORT="${UI_PORT:-${PORT:-8787}}"
 
 if [[ ! -f "$CONFIG_FILE" ]]; then
   echo "ERROR: config file not found: $CONFIG_FILE"
