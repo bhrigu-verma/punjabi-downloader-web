@@ -9,6 +9,7 @@ HOST="${UI_HOST:-0.0.0.0}"
 PORT="${PORT:-${UI_PORT:-8787}}"
 
 echo "Starting Punjabi Downloader Web"
+echo "Started at (UTC): $(date -u '+%Y-%m-%d %H:%M:%S')"
 echo "Project: $PROJECT_DIR"
 echo "Config: $DOWNLOADER_CONFIG"
 echo "Host: $HOST"
