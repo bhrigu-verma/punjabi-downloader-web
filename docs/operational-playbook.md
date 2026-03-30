@@ -221,3 +221,8 @@ This playbook captures repeatable runtime and deployment checks for Punjabi Down
 - Objective: Keep this checkpoint repeatable and observable in day-to-day operations.
 - Command: Validate state through dashboard and API status before and after action.
 - Verification: Capture log evidence and confirm expected state transition.
+
+## 45. data retention housekeeping
+- Objective: Keep this checkpoint repeatable and observable in day-to-day operations.
+- Command: Validate state through dashboard and API status before and after action.
+- Verification: Capture log evidence and confirm expected state transition.
