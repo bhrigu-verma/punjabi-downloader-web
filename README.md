@@ -134,6 +134,13 @@ Notes:
 - Dashboard `/dashboard` and API require credentials
 - If `BASIC_AUTH_ENABLED=1` and user/pass are missing, server exits with an error
 
+Quick auth verification:
+
+```bash
+curl -i http://127.0.0.1:8787/dashboard
+curl -i -u admin:'change-this-password' http://127.0.0.1:8787/dashboard
+```
+
 ## Deploy (Docker)
 
 Build image:
