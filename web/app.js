@@ -488,7 +488,7 @@ btnRefresh.addEventListener("click", refreshAll);
 pollSelect.addEventListener("change", () => {
   pollIntervalMs = Number(pollSelect.value || 4000);
   installTimer();
-  showMessage(`Refresh interval set to ${Math.round(pollIntervalMs / 1000)}s`);
+  showMessage(`Auto-refresh interval set to ${Math.round(pollIntervalMs / 1000)}s`);
 });
 
 workerSelect.addEventListener("change", async (e) => {
